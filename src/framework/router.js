@@ -41,6 +41,7 @@ export function Router({componentPath, initialProps}) {
           encodeURIComponent(componentPath)
       )
     );
+    console.log({content});
     cache.set(cacheKey, content);
   }
 

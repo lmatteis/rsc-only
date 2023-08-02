@@ -1,12 +1,13 @@
 import Select from './Select';
 
 async function getOptions() {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 4000));
 
   return ['foo', 'bar', 'baz'];
 }
 
 export default async function DropdownRSC({showOptions}) {
+  const options = await getOptions();
   if (showOptions) {
     const options = await getOptions();
 
