@@ -26,7 +26,6 @@ const {renderToPipeableStream} = require('react-server-dom-webpack/server');
 const path = require('path');
 const {Pool} = require('pg');
 const React = require('react');
-const ReactApp = require('../src/App').default;
 
 // Don't keep credentials in the source tree in a real app!
 const pool = new Pool(require('../credentials'));
@@ -86,15 +85,17 @@ app.get(
   })
 );
 
-async function renderReactTree(res, props) {
+async function renderReactTree(req, res, props) {
   await waitForWebpack();
   const manifest = readFileSync(
     path.resolve(__dirname, '../build/react-client-manifest.json'),
     'utf8'
   );
   const moduleMap = JSON.parse(manifest);
+
+  const ReactTree = await import(`../src/${req.query.componentPath}`);
   const {pipe} = renderToPipeableStream(
-    React.createElement(ReactApp, props),
+    React.createElement(ReactTree.default.default, props),
     moduleMap
   );
   pipe(res);
@@ -106,11 +107,7 @@ function sendResponse(req, res, redirectToId) {
     location.selectedId = redirectToId;
   }
   res.set('X-Location', JSON.stringify(location));
-  renderReactTree(res, {
-    selectedId: location.selectedId,
-    isEditing: location.isEditing,
-    searchText: location.searchText,
-  });
+  renderReactTree(req, res, location);
 }
 
 app.get('/react', function(req, res) {

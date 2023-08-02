@@ -12,31 +12,30 @@
 // Note: this code would usually be provided by a framework.
 // ---------------------------------------------------------
 
+import {createContext, startTransition, useContext, useState, use} from 'react';
 import {
-  createContext,
-  startTransition,
-  useContext,
-  useState,
-  use,
-} from 'react';
-import {createFromFetch, createFromReadableStream} from 'react-server-dom-webpack/client';
+  createFromFetch,
+  createFromReadableStream,
+} from 'react-server-dom-webpack/client';
 
 const RouterContext = createContext();
 const initialCache = new Map();
 
-export function Router() {
+export function Router({componentPath, initialProps}) {
   const [cache, setCache] = useState(initialCache);
-  const [location, setLocation] = useState({
-    selectedId: null,
-    isEditing: false,
-    searchText: '',
-  });
+  const [location, setLocation] = useState(initialProps);
+  console.log({componentPath});
 
   const locationKey = JSON.stringify(location);
   let content = cache.get(locationKey);
   if (!content) {
     content = createFromFetch(
-      fetch('/react?location=' + encodeURIComponent(locationKey))
+      fetch(
+        '/react?location=' +
+          encodeURIComponent(locationKey) +
+          '&componentPath=' +
+          encodeURIComponent(componentPath)
+      )
     );
     cache.set(locationKey, content);
   }
@@ -52,14 +51,14 @@ export function Router() {
         navigate(nextLocation);
       }
       setCache(nextCache);
-    })
+    });
   }
 
   function navigate(nextLocation) {
     startTransition(() => {
-      setLocation(loc => ({
+      setLocation((loc) => ({
         ...loc,
-        ...nextLocation
+        ...nextLocation,
       }));
     });
   }

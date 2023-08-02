@@ -12,7 +12,7 @@
 
 import {createRoot} from 'react-dom/client';
 import {ErrorBoundary} from 'react-error-boundary';
-import {Router} from './router'
+import {Router} from './router';
 
 const root = createRoot(document.getElementById('root'));
 root.render(<Root />);
@@ -20,7 +20,14 @@ root.render(<Root />);
 function Root() {
   return (
     <ErrorBoundary FallbackComponent={Error}>
-      <Router />
+      <Router
+        componentPath="App.js"
+        initialProps={{
+          selectedId: null,
+          isEditing: false,
+          searchText: '',
+        }}
+      />
     </ErrorBoundary>
   );
 }
