@@ -14,6 +14,7 @@ import EditButton from './EditButton';
 import SearchField from './SearchField';
 import NoteSkeleton from './NoteSkeleton';
 import NoteListSkeleton from './NoteListSkeleton';
+import Dropdown from './Dropdown';
 
 export default function App({selectedId, isEditing, searchText}) {
   return (
@@ -30,6 +31,7 @@ export default function App({selectedId, isEditing, searchText}) {
           />
           <strong>React Notes</strong>
         </section>
+        <Dropdown />
         <section className="sidebar-menu" role="menubar">
           <SearchField />
           <EditButton noteId={null}>New</EditButton>

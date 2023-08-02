@@ -24,10 +24,14 @@ const initialCache = new Map();
 export function Router({componentPath, initialProps}) {
   const [cache, setCache] = useState(initialCache);
   const [location, setLocation] = useState(initialProps);
-  console.log({componentPath});
 
   const locationKey = JSON.stringify(location);
-  let content = cache.get(locationKey);
+  const componentPathKey = JSON.stringify(componentPath);
+
+  const cacheKey = locationKey + componentPathKey;
+
+  let content = cache.get(cacheKey);
+
   if (!content) {
     content = createFromFetch(
       fetch(
@@ -37,7 +41,7 @@ export function Router({componentPath, initialProps}) {
           encodeURIComponent(componentPath)
       )
     );
-    cache.set(locationKey, content);
+    cache.set(cacheKey, content);
   }
 
   function refresh(response) {
