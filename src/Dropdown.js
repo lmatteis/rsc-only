@@ -5,9 +5,7 @@ export default function Dropdown() {
     <Router
       componentPath="DropdownRSC.js"
       initialProps={{
-        selectedId: null,
-        isEditing: false,
-        searchText: '',
+        showOptions: false,
       }}
     />
   );
