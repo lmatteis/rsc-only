@@ -7,7 +7,6 @@ async function getOptions() {
 }
 
 export default async function DropdownRSC({showOptions}) {
-  const options = await getOptions();
   if (showOptions) {
     const options = await getOptions();
 

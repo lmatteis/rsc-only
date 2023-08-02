@@ -3,13 +3,12 @@
 import {useRouter} from './framework/router';
 
 export default function Select({children}) {
-  const {refresh, navigate} = useRouter();
+  const {navigate} = useRouter();
 
   return (
     <select
       onClick={() => {
-        refresh();
-        // navigate({showOptions: true});
+        navigate({showOptions: true});
       }}>
       {children}
     </select>
