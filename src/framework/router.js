@@ -12,7 +12,7 @@
 // Note: this code would usually be provided by a framework.
 // ---------------------------------------------------------
 
-import {createContext, useContext, useState, use, useTransition} from 'react';
+import {createContext, useContext, useState, use, startTransition} from 'react';
 import {
   createFromFetch,
   createFromReadableStream,
@@ -22,8 +22,6 @@ const RouterContext = createContext();
 const initialCache = new Map();
 
 export function Router({componentPath, initialProps}) {
-  const [isPending, startTransition] = useTransition();
-
   const [cache, setCache] = useState(initialCache);
   const [location, setLocation] = useState(initialProps);
 
@@ -70,7 +68,7 @@ export function Router({componentPath, initialProps}) {
   }
 
   return (
-    <RouterContext.Provider value={{location, navigate, refresh, isPending}}>
+    <RouterContext.Provider value={{location, navigate, refresh}}>
       {use(content)}
     </RouterContext.Provider>
   );

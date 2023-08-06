@@ -1,14 +1,18 @@
 'use client';
 
+import {useTransition} from 'react';
 import {useRouter} from './framework/router';
 
 export default function Select({children}) {
-  const {navigate, isPending} = useRouter();
+  const {navigate} = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   return (
     <select
       onClick={() => {
-        navigate({showOptions: true});
+        startTransition(() => {
+          navigate({showOptions: true});
+        });
       }}>
       {isPending ? <option>Loading...</option> : children}
     </select>
